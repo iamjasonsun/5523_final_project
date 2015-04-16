@@ -1,13 +1,9 @@
 package classifier;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import trainingMethod.TrainingMethod;
 import featureGenerator.FeatureVectorGenerator;
@@ -21,7 +17,7 @@ public class WebpageClassifier {
         _trainingMethod = trainingMethod;
     }
 
-    public void execute(final String parentFolderPath) throws IOException {
+    public void execute(final String parentFolderPath) throws Exception {
         // get all files and the class it belongs to
         final Map<File, WebpageClass> courseFileData = getFileToWebpageClassMap(parentFolderPath, "course",
                 WebpageClass.COURSE);
@@ -35,20 +31,19 @@ public class WebpageClassifier {
         fileDataToWebpageClassMap.putAll(studentFileData);
         // get training data - get feature vector of each file and the class it
         // belongs to
-        final Map<List<Integer>, WebpageClass> trainingData = new HashMap<List<Integer>, WebpageClass>();
-        for (Map.Entry<File, WebpageClass> fileEntry : fileDataToWebpageClassMap.entrySet()) {
-            Document document = Jsoup.parse(fileEntry.getKey(), "UTF-8");
-            List<Integer> featureVector = _featureVectorGenerator.getFeatureVector(document);
-            trainingData.put(featureVector, fileEntry.getValue());
-        }
+        final Map<List<Integer>, WebpageClass> trainingData = _featureVectorGenerator
+                .getFeatureVectors(fileDataToWebpageClassMap);
+        System.out.println(ClassifierUtil.prettyPrintFeatureVectors(trainingData));
+
         // perform training
-        _trainingMethod.train(trainingData);
+        // _trainingMethod.train(trainingData);
 
         // TODO: get all testing files and their class
 
-        final Map<List<Integer>, WebpageClass> testingData = new HashMap<List<Integer>, WebpageClass>();
-        TestResult testResult = _trainingMethod.test(testingData);
-        System.out.println(testResult.getAccuracy());
+        // final Map<List<Integer>, WebpageClass> testingData = new
+        // HashMap<List<Integer>, WebpageClass>();
+        // TestResult testResult = _trainingMethod.test(testingData);
+        // System.out.println(testResult.getAccuracy());
     }
 
     private Map<File, WebpageClass> getFileToWebpageClassMap(final String parentFolderPath, final String classFolder,
@@ -63,14 +58,12 @@ public class WebpageClassifier {
         return fileToWebpageClassMap;
     }
 
-    public static void main(String[] args) throws IOException {
-        final String dataParentFolder = "";
+    public static void main(String[] args) throws Exception {
+        final String dataParentFolder = "/Users/jiasongsun/Downloads/webkb";
         WebpageClassifierFactory webpageClassifierFactory = new WebpageClassifierFactory();
         WebpageClassifier webpageClassifierWithHumanChosenFeatureAndSVMTrainingMethod = webpageClassifierFactory
                 .createClassifierWithHumanChosenFeatureAndSVMTrainingMethod();
-        WebpageClassifier webpageClassifierWithKeywordsFeatureAndSVMTrainingMethod = webpageClassifierFactory
-                .createClassifierWithKeywordsFeatureAndSVMTrainingMethod();
         webpageClassifierWithHumanChosenFeatureAndSVMTrainingMethod.execute(dataParentFolder);
-        webpageClassifierWithKeywordsFeatureAndSVMTrainingMethod.equals(dataParentFolder);
+
     }
 }

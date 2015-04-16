@@ -1,9 +1,11 @@
 package featureGenerator;
 
+import java.io.File;
 import java.util.List;
+import java.util.Map;
 
-import org.jsoup.nodes.Document;
+import classifier.WebpageClass;
 
 public interface FeatureVectorGenerator {
-    List<Integer> getFeatureVector(Document document);
+    Map<List<Integer>, WebpageClass> getFeatureVectors(Map<File, WebpageClass> trainingFiles) throws Exception;
 }
