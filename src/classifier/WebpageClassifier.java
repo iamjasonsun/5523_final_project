@@ -61,9 +61,13 @@ public class WebpageClassifier {
     public static void main(String[] args) throws Exception {
         final String dataParentFolder = "/Users/jiasongsun/Downloads/webkb";
         WebpageClassifierFactory webpageClassifierFactory = new WebpageClassifierFactory();
-        WebpageClassifier webpageClassifierWithHumanChosenFeatureAndSVMTrainingMethod = webpageClassifierFactory
-                .createClassifierWithHumanChosenFeatureAndSVMTrainingMethod();
-        webpageClassifierWithHumanChosenFeatureAndSVMTrainingMethod.execute(dataParentFolder);
-
+        // WebpageClassifier
+        // webpageClassifierWithHumanChosenFeatureAndSVMTrainingMethod =
+        // webpageClassifierFactory
+        // .createClassifierWithHumanChosenFeatureAndSVMTrainingMethod();
+        // webpageClassifierWithHumanChosenFeatureAndSVMTrainingMethod.execute(dataParentFolder);
+        WebpageClassifier webpageClassifierWithKeywordSVM = webpageClassifierFactory
+                .createClassifierWithKeywordsFeatureAndSVMTrainingMethod();
+        webpageClassifierWithKeywordSVM.execute(dataParentFolder);
     }
 }
