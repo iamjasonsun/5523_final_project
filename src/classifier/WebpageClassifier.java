@@ -33,17 +33,7 @@ public class WebpageClassifier {
         // belongs to
         final Map<List<Integer>, WebpageClass> trainingData = _featureVectorGenerator
                 .getFeatureVectors(fileDataToWebpageClassMap);
-        System.out.println(ClassifierUtil.prettyPrintFeatureVectors(trainingData));
-
-        // perform training
-        // _trainingMethod.train(trainingData);
-
-        // TODO: get all testing files and their class
-
-        // final Map<List<Integer>, WebpageClass> testingData = new
-        // HashMap<List<Integer>, WebpageClass>();
-        // TestResult testResult = _trainingMethod.test(testingData);
-        // System.out.println(testResult.getAccuracy());
+        ClassifierUtil.prettyPrintFeatureVectors(trainingData);
     }
 
     private Map<File, WebpageClass> getFileToWebpageClassMap(final String parentFolderPath, final String classFolder,

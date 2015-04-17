@@ -114,7 +114,7 @@ public class KeywordsFeatureVectorGenerator implements FeatureVectorGenerator {
     }
 
     private static List<String> findTopKWord(Set<File> fileSet) throws IOException {
-        Set<String>ignoreString = new HashSet<>();
+        Set<String> ignoreString = new HashSet<>();
         ignoreString.add("");
         ignoreString.add(".");
         ignoreString.add(",");
@@ -131,9 +131,15 @@ public class KeywordsFeatureVectorGenerator implements FeatureVectorGenerator {
         ignoreString.add("that");
         ignoreString.add("?");
         ignoreString.add("!");
-        ignoreString.add("are");
-     
-    	int k = 30;
+        ignoreString.add("as");
+        ignoreString.add("for");
+        ignoreString.add("be");
+        ignoreString.add(":");
+        ignoreString.add(";");
+        ignoreString.add("1996");
+        ignoreString.add("or");
+
+        int k = 50;
         List<String> topK = new LinkedList<>();
         Map<String, Integer> wordsWithFreq = new HashMap<>();
         for (File f : fileSet) {
@@ -149,13 +155,13 @@ public class KeywordsFeatureVectorGenerator implements FeatureVectorGenerator {
             for (String str : plainText) {
                 String[] temp = str.split(" ");
                 for (String tp : temp) {
-                	if(ignoreString.contains(tp)){
-	                    if (!wordsWithFreq.containsKey(tp.toLowerCase())) {
-	                        wordsWithFreq.put(tp.toLowerCase(), 1);
-	                    } else {
-	                        wordsWithFreq.put(tp.toLowerCase(), wordsWithFreq.get(tp.toLowerCase()) + 1);
-	                    }
-                	}
+                    if (!ignoreString.contains(tp.toLowerCase())) {
+                        if (!wordsWithFreq.containsKey(tp.toLowerCase())) {
+                            wordsWithFreq.put(tp.toLowerCase(), 1);
+                        } else {
+                            wordsWithFreq.put(tp.toLowerCase(), wordsWithFreq.get(tp.toLowerCase()) + 1);
+                        }
+                    }
                 }
             }
         }
