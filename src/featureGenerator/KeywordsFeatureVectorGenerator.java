@@ -72,10 +72,10 @@ public class KeywordsFeatureVectorGenerator implements FeatureVectorGenerator {
             for (String str : plainText) {
                 String[] temp = str.split(" ");
                 for (String tp : temp) {
-                    if (!wordsWithFreq.containsKey(tp)) {
-                        wordsWithFreq.put(tp, 1);
+                    if (!wordsWithFreq.containsKey(tp.toLowerCase())) {
+                        wordsWithFreq.put(tp.toLowerCase(), 1);
                     } else {
-                        wordsWithFreq.put(tp, wordsWithFreq.get(tp) + 1);
+                        wordsWithFreq.put(tp.toLowerCase(), wordsWithFreq.get(tp.toLowerCase()) + 1);
                     }
                 }
             }
@@ -114,7 +114,26 @@ public class KeywordsFeatureVectorGenerator implements FeatureVectorGenerator {
     }
 
     private static List<String> findTopKWord(Set<File> fileSet) throws IOException {
-        int k = 30;
+        Set<String>ignoreString = new HashSet<>();
+        ignoreString.add("");
+        ignoreString.add(".");
+        ignoreString.add(",");
+        ignoreString.add("-");
+        ignoreString.add("to");
+        ignoreString.add("and");
+        ignoreString.add("the");
+        ignoreString.add("of");
+        ignoreString.add("in");
+        ignoreString.add("a");
+        ignoreString.add("an");
+        ignoreString.add("is");
+        ignoreString.add("will");
+        ignoreString.add("that");
+        ignoreString.add("?");
+        ignoreString.add("!");
+        ignoreString.add("are");
+     
+    	int k = 30;
         List<String> topK = new LinkedList<>();
         Map<String, Integer> wordsWithFreq = new HashMap<>();
         for (File f : fileSet) {
@@ -130,11 +149,13 @@ public class KeywordsFeatureVectorGenerator implements FeatureVectorGenerator {
             for (String str : plainText) {
                 String[] temp = str.split(" ");
                 for (String tp : temp) {
-                    if (!wordsWithFreq.containsKey(tp)) {
-                        wordsWithFreq.put(tp, 1);
-                    } else {
-                        wordsWithFreq.put(tp, wordsWithFreq.get(tp) + 1);
-                    }
+                	if(ignoreString.contains(tp)){
+	                    if (!wordsWithFreq.containsKey(tp.toLowerCase())) {
+	                        wordsWithFreq.put(tp.toLowerCase(), 1);
+	                    } else {
+	                        wordsWithFreq.put(tp.toLowerCase(), wordsWithFreq.get(tp.toLowerCase()) + 1);
+	                    }
+                	}
                 }
             }
         }
