@@ -50,12 +50,16 @@ public class KeywordsFeatureVectorGenerator implements FeatureVectorGenerator {
     private static Map<List<Integer>, WebpageClass> generateVector(List<String> topWords_course,
             List<String> topWords_student, List<String> topWords_faculty, Map<File, WebpageClass> trainingFiles)
             throws IOException {
-        // int k=30;
+        // int k=90;
+        List<String> all = new LinkedList<String>();
+        all.addAll(topWords_course);
+        all.addAll(topWords_student);
+        all.addAll(topWords_faculty);
         Map<List<Integer>, WebpageClass> vectorWithLable = new HashMap<>();
 
         for (Entry<File, WebpageClass> e : trainingFiles.entrySet()) {
             List<Integer> vector = new LinkedList<>();
-            for (int i = 0; i < topWords_course.size(); i++) {
+            for (int i = 0; i < all.size(); i++) {
                 vector.add(-1);
             }
             Document document = Jsoup.parse(e.getKey(), "UTF-8");
@@ -80,29 +84,11 @@ public class KeywordsFeatureVectorGenerator implements FeatureVectorGenerator {
                 }
             }
 
-            if (e.getValue() == WebpageClass.COURSE) {
-                for (int i = 0; i < topWords_course.size(); i++) {
-                    if (wordsWithFreq.containsKey(topWords_course.get(i))) {
-                        vector.set(i, wordsWithFreq.get(topWords_course.get(i)));
-                    } else {
-                        vector.set(i, 0);
-                    }
-                }
-            } else if (e.getValue() == WebpageClass.STUDENT) {
-                for (int i = 0; i < topWords_student.size(); i++) {
-                    if (wordsWithFreq.containsKey(topWords_student.get(i))) {
-                        vector.set(i, wordsWithFreq.get(topWords_student.get(i)));
-                    } else {
-                        vector.set(i, 0);
-                    }
-                }
-            } else {
-                for (int i = 0; i < topWords_faculty.size(); i++) {
-                    if (wordsWithFreq.containsKey(topWords_faculty.get(i))) {
-                        vector.set(i, wordsWithFreq.get(topWords_faculty.get(i)));
-                    } else {
-                        vector.set(i, 0);
-                    }
+            for (int i = 0; i < all.size(); i++) {
+                if (wordsWithFreq.containsKey(all.get(i))) {
+                    vector.set(i, wordsWithFreq.get(all.get(i)));
+                } else {
+                    vector.set(i, 0);
                 }
             }
 
@@ -139,7 +125,7 @@ public class KeywordsFeatureVectorGenerator implements FeatureVectorGenerator {
         ignoreString.add("1996");
         ignoreString.add("or");
 
-        int k = 50;
+        int k = 30;
         List<String> topK = new LinkedList<>();
         Map<String, Integer> wordsWithFreq = new HashMap<>();
         for (File f : fileSet) {
