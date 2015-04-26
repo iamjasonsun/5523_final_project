@@ -6,7 +6,7 @@ x_learning = []
 lengthOfCourse = 0
 lengthOfFaculty = 0
 lengthOfStudent = 0
-with open("result_Course_top") as f:
+with open("result_Course_new") as f:
     for line in f:
         lengthOfCourse = lengthOfCourse + 1
         data_entry = []
@@ -15,7 +15,7 @@ with open("result_Course_top") as f:
             data_entry.append(int(str))
         x_learning.append(data_entry)
 f.closed
-with open("result_Faculty_top") as f:
+with open("result_Faculty_new") as f:
     for line in f:
         lengthOfFaculty = lengthOfFaculty + 1
         data_entry = []
@@ -24,7 +24,7 @@ with open("result_Faculty_top") as f:
             data_entry.append(int(str))
         x_learning.append(data_entry)
 f.closed
-with open("result_Student_top") as f:
+with open("result_Student_new") as f:
     for line in f:
         lengthOfStudent = lengthOfStudent + 1
         data_entry = []
